@@ -1,0 +1,37 @@
+---
+title: "Metalog BMI preparation"
+format: html
+---
+
+```         
+undefined
+```
+
+library(R.utils)\
+library(readr)
+
+# Paths to compressed files
+
+meta_gz \<- "data/metalog/human_core_wide_2025-12-28.tsv.gz"\
+taxa_gz \<- "data/metalog/human_metaphlan4_species_2025-12-28.tsv.gz"
+
+# Unzip (does nothing if already unzipped and overwrite = FALSE)
+
+R.utils::gunzip(meta_gz, overwrite = FALSE)\
+R.utils::gunzip(taxa_gz, overwrite = FALSE)
+
+# Paths to uncompressed TSVs
+
+meta_tsv \<- "data/metalog/human_core_wide_2025-12-28.tsv"\
+taxa_tsv \<- "data/metalog/human_metaphlan4_species_2025-12-28.tsv"
+
+# Read into R
+
+metadata \<- readr::read_tsv(meta_tsv)\
+taxa \<- readr::read_tsv(taxa_tsv)
+
+```         
+text
+```
+
+`undefined`

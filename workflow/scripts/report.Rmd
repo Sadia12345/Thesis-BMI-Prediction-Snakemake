@@ -6,60 +6,42 @@ output:
     keep_md: true
     self_contained: true
     theme: spacelab
+params:
+  dataset: "metalog_test"
+  ml_methods: !r c("glmnet", "rf")
+  nseeds: 10
+  ncores: 1
+  kfold: 2
+  config_path: "config/config.yaml"
+  find_feature_importance: TRUE
 ---
 
 ```{r setup, include=FALSE}
 schtools::set_knitr_opts()
-```
-
-```{r load}
 library(knitr)
-```
+# FORCE absolute paths - Hardcoded
+figures_dir <- "D:/Thesis_Project/mikropml-snakemake-workflow/figures"
+figures_dir <- file.path(figures_dir, params$dataset)
 
-Machine learning algorithm(s) used: `r snakemake@params[['ml_methods']]`.
-Models were trained with `r snakemake@params[['nseeds']]` different random
-partitions of the `r snakemake@params[['dataset']]` dataset into training and
-testing sets using `r snakemake@params[['kfold']]`-fold cross validation.
-See [`r snakemake@params[['config_path']]`](`r snakemake@params[['config_path']]`) 
-for the full configuration.
-
-## Workflow
-
-```{r rulegraph, out.width = '80%'}
-include_graphics(snakemake@input[['rulegraph']])
-```
-
-## Model Performance
-
-```{r perf_plot, out.width='80%'}
-include_graphics(snakemake@input[['perf_plot']])
-```
-
-```{r roc_plot, out.width='80%'}
-include_graphics(snakemake@input[['roc_plot']])
-```
-
-## Hyperparameter Performance
-
-```{r hp_plot, out.width='80%'}
-include_graphics(snakemake@input[['hp_plot']])
-```
-
-```{r feat_imp_header, results='asis'}
-if (isTRUE(snakemake@params[['find_feature_importance']])) { 
-    cat("## Feature Importance") 
+# Helper to get absolute path
+get_fig_path <- function(filename) {
+  file.path(figures_dir, filename)
 }
 ```
 
-```{r feat_imp_plot, out.width='80%', eval=snakemake@params[['find_feature_importance']]}
-include_graphics(snakemake@input[['feat_plot']])
-```
+# Model Performance
 
-## Memory Usage & Runtime
+```{r results, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%"}
+# include_graphics(get_fig_path("rulegraph.png"))
+include_graphics(get_fig_path("performance.png"))
+include_graphics(get_fig_path("roc_curves.png"))
 
-Each model training run was given `r snakemake@params[['ncores']]` cores
-for parallelization.
+hp_paths <- file.path(figures_dir, paste0("hp_performance_", params$ml_methods, ".png"))
+include_graphics(hp_paths)
 
-```{r runtime_plot, out.width='80%'}
-include_graphics(snakemake@input[['bench_plot']])
+if (isTRUE(params$find_feature_importance)) {
+    cat("## Feature Importance")
+}
+include_graphics(get_fig_path("feature_importance.png"))
+include_graphics(get_fig_path("benchmarks.png"))
 ```

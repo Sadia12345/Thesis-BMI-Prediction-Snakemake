@@ -1,77 +1,67 @@
-# Run mikropml with snakemake <img src='figures/mikropml-snakemake-workflow.png' align="right" height="120" />
+# Microbiome-Based BMI Prediction Pipeline
 
-<!--[![tests](https://github.com/SchlossLab/mikropml-snakemake-workflow/actions/workflows/tests.yml/badge.svg)](https://github.com/SchlossLab/mikropml-snakemake-workflow/actions/workflows/tests.yml)-->
-[![build](https://github.com/SchlossLab/mikropml-snakemake-workflow/actions/workflows/build.yml/badge.svg)](https://github.com/SchlossLab/mikropml-snakemake-workflow/actions/workflows/build.yml)
-[![tests](https://github.com/SchlossLab/mikropml-snakemake-workflow/actions/workflows/tests.yml/badge.svg)](https://github.com/SchlossLab/mikropml-snakemake-workflow/actions/workflows/tests.yml)
-[![License](https://img.shields.io/badge/license-MIT-blue)](/LICENSE.md)
-[![DOI](https://zenodo.org/badge/292886119.svg)](https://zenodo.org/badge/latestdoi/292886119)
+## Thesis Project Overview
+This repository contains the reproducible computational workflow for my Master's thesis. The goal of this project is to develop machine learning models that predict Body Mass Index (BMI) from human gut microbiome taxonomic profiles.
 
-[Snakemake](https://snakemake.readthedocs.io/en/stable) is a workflow manager
-that enables massively parallel and reproducible
-analyses.
-Snakemake is a suitable tool to use when you can break a workflow down into
-discrete steps, with each step having input and output files.
+By leveraging the `mikropml` R package within a Scalable Snakemake workflow, this project ensures that all analysis metrics—from data preprocessing to model evaluation—are transparent, reproducible, and scalable to high-performance computing (HPC) environments.
 
-[mikropml](http://www.schlosslab.org/mikropml/) is an R package for supervised machine learning pipelines.
-We provide this example workflow as a template to get started running mikropml with snakemake.
-We hope you then customize the code to meet the needs of your particular ML task.
+## 🚀 Project Status
+- **Current State:** ✅ Pipeline Logic Verified
+  - The complete Snakemake workflow has been successfully implemented and tested on a subset of the data (`metalog_test`).
+  - Key components (preprocessing, training, evaluation, reporting) are functional.
+  - Environment dependencies (R, Conda) are fully resolved.
+- **Next Phase:** 🚧 Full Scale Analysis
+  - Execution on the full `metalog_bmi` dataset.
+  - Deployment to CSC Supercomputer environment.
+  - Deeper hyperparameter tuning and interpretation of feature importance.
 
-For more details on these tools, see the
-[Snakemake tutorial](https://snakemake.readthedocs.io/en/stable/tutorial/tutorial.html)
-and read the [mikropml docs](http://www.schlosslab.org/mikropml/).
+## 🔬 Methodology
+The analysis follows a rigorous machine learning framework:
+1.  **Data Preprocessing:** Cleaning and normalizing taxonomic count data.
+2.  **Model Selection:** Comparing linear models (GLMNet/Lasso) and non-linear models (Random Forest).
+3.  **Validation:** employing k-fold cross-validation (default k=2 for testing, k=10 for production) with multiple random seeds splits to ensure robustness.
+4.  **Reporting:** Automatically generating HTML reports with Performance curves (ROC/PR) and feature importance lists.
 
-## The Workflow
+## 🛠️ Technical Stack
+- **Workflow Manager:** [Snakemake](https://snakemake.github.io) (Python-based)
+- **Machine Learning:** [mikropml](https://github.com/SchlossLab/mikropml) (R package)
+- **Environment:** Conda (environment.yml included)
+- **Reporting:** RMarkdown
 
-The [`Snakefile`](workflow/Snakefile) contains rules which define the output files we want and how to make them.
-Snakemake automatically builds a directed acyclic graph (DAG) of jobs to figure
-out the dependencies of each of the rules and what order to run them in.
-This workflow preprocesses the example dataset, calls `mikropml::run_ml()`
-for each seed and ML method set in the config file,
-combines the results files, plots performance results
-(cross-validation and test AUROCs, hyperparameter AUROCs from cross-validation, and benchmark performance),
-and renders a simple [R Markdown report](report.Rmd) as a GitHub-flavored markdown file ([see example here](report-example.md)).
+## 📂 Repository Structure
+```
+.
+├── config/             # Configuration settings (dataset selection, ML parameters)
+├── data/               # Raw and processed data inputs
+├── workflow/           # Snakemake rules and scripts
+│   ├── rules/          # Modular rule definitions
+│   └── scripts/        # R scripts for training and plotting
+├── results/            # (Ignored) Generated model outputs
+└── figures/            # (Ignored)Generated plots and visualizations
+```
 
-<!-- snakemake make_graph_figures -->
-![rulegraph](figures/graphviz/rulegraph.png)
+## 💻 How to Run
+To reproduce the analysis on your local machine:
 
-The DAG shows how calls to `run_ml` can run in parallel if
-snakemake is allowed to run more than one job at a time.
-If we use 100 seeds and 4 ML methods, snakemake would call `run_ml` 400 times.
-Here's a small example DAG if we were to use only 2 seeds and 1 ML method:
+1.  **Install Dependencies:**
+    ```bash
+    conda env create -f workflow/envs/environment.yml
+    conda activate snakemake
+    ```
 
-<!-- snakemake make_graph_figures -->
-![dag](figures/graphviz/dag.png)
+2.  **Run Pipeline (Test Mode):**
+    ```bash
+    # Runs the workflow on test data using 8 cores
+    snakemake --cores 8
+    ```
 
-## Usage
+3.  **View Report:**
+    Open `report_metalog_test.html` generated in the root directory.
 
-Full usage instructions recommended by snakemake are available in the 
-[snakemake workflow catalog](https://snakemake.github.io/snakemake-workflow-catalog/?usage=SchlossLab/mikropml-snakemake-workflow).
-Snakemake recommends using `snakedeploy` to use this workflow as a module in 
-your own project.
-
-Alternatively, you can download this repo and modify the code 
-directly to suit your needs. See instructions [here](/quick-start.md).
-
-## Help & Contributing
-
-If you come across a bug, [open an
-issue](https://github.com/SchlossLab/mikropml-snakemake-workflow/issues)
-and include a minimal reproducible example.
-
-If you have questions, create a new post in
-[Discussions](https://github.com/SchlossLab/mikropml-snakemake-workflow/discussions).
-
-If you’d like to contribute, see our guidelines
-[here](.github/CONTRIBUTING.md).
-
-## Code of Conduct
-
-Please note that the mikropml-snakemake-workflow is released with a
-[Contributor Code of Conduct](.github/CODE_OF_CONDUCT.md).
-By contributing to this project, you agree to abide by its terms.
-
-## More resources
-
-- [mikropml docs](http://www.schlosslab.org/mikropml/)
-- [Snakemake tutorial](https://snakemake.readthedocs.io/en/stable/tutorial/tutorial.html)
-- [conda user guide](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html)
+## 📅 Roadmap for Completion
+| Milestone | Description | Status |
+|-----------|-------------|--------|
+| **Phase 1** | Setup Snakemake workflow & dependencies | ✅ Complete |
+| **Phase 2** | Verify logic with test dataset | ✅ Complete |
+| **Phase 3** | Run full analysis on local/HPC | 🔜 Next Step |
+| **Phase 4** | Complete Thesis Writing & Interpretation | 📅 Planned |

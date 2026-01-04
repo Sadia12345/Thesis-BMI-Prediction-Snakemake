@@ -3,18 +3,13 @@ import os
 from snakemake.utils import min_version
 import sys
 
-
 min_version("6.12.3")
-
 
 containerized: "docker://kellysovacool/mikropml:latest"
 
-
 default_configfile = "config/config.yaml"
 
-
 configfile: default_configfile
-
 
 args = sys.argv
 config_path = (
@@ -22,7 +17,6 @@ config_path = (
     if "--configfile" in args
     else default_configfile
 )
-
 
 MEM_PER_GB = 1024
 
@@ -42,48 +36,60 @@ results_types = ["performance", "benchmarks", "sensspec"]
 if find_feature_importance:
     results_types.append("feature-importance")
 
-
 include: "rules/learn.smk"
 include: "rules/combine.smk"
 include: "rules/plot.smk"
 include: "rules/example-report.smk"
 
-
 report: "report/workflow.rst"
-
 
 rule targets:
     input:
-        f"report_{dataset}.html",
-
+        f"report_{dataset}.html"
 
 rule render_report:
     input:
         perf_plot=rules.plot_performance.output.plot,
         feat_plot="figures/{dataset}/feature_importance.png",
-        hp_plot=expand(
-            "figures/{{dataset}}/hp_performance_{method}.png", method=ml_methods
-        ),
+        hp_plot=expand("figures/{{dataset}}/hp_performance_{method}.png", method=ml_methods),
         bench_plot=rules.plot_benchmarks.output.plot,
         roc_plot=rules.plot_roc_curves.output.plot,
-        rulegraph="figures/graphviz/rulegraph.png",
+        rulegraph="figures/graphviz/rulegraph.png"
     output:
-        html="report_{dataset}.html",
+        html="report_{dataset}.html"
     log:
-        "log/{dataset}/render_report.txt",
-    params:
-        dataset=dataset,
-        nseeds=nseeds,
-        ml_methods=ml_methods,
-        ncores=ncores,
-        kfold=kfold,
-        find_feature_importance=find_feature_importance,
-        config_path=config_path,
+        "log/{dataset}/render_report.txt"
     conda:
         "envs/mikropml.yml"
-    script:
-        "scripts/report.Rmd"
-
+    run:
+        # 1. Prepare variables for R
+        methods_r = "c('" + "','".join(ml_methods) + "')"
+        feat_imp_r = str(find_feature_importance).upper()
+        
+        # 2. Define relative paths (Added "workflow/" here!)
+        rmd_path = "workflow/scripts/report.Rmd"
+        out_path = output.html
+        cfg_path = "config/config.yaml"
+        
+        # 3. Construct the R command manually
+        # Use absolute path for output to prevent RMarkdown from saving it in scripts folder
+        import os
+        abs_out_path = os.path.abspath(output.html).replace("\\", "/")
+        
+        cmd = (
+            f"Rscript -e \""
+            f"rmarkdown::render('{rmd_path}', output_file='{abs_out_path}', quiet=TRUE, "
+            f"params=list(dataset='{wildcards.dataset}', "
+            f"nseeds={nseeds}, "
+            f"ml_methods={methods_r}, "
+            f"ncores={ncores}, "
+            f"kfold={kfold}, "
+            f"find_feature_importance={feat_imp_r}, "
+            f"config_path='{cfg_path}'))\""
+        )
+        
+        # 4. Run the command
+        shell(cmd)
 
 rule archive:
     input:

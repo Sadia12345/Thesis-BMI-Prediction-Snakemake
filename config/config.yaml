@@ -1,10 +1,10 @@
-dataset_csv: data/processed/otu-large.csv
-dataset_name: otu-large
-outcome_colname: dx
+dataset_csv: data/metalog_test.csv
+dataset_name: "metalog_test"
+outcome_colname: group
 ml_methods:
  - glmnet
  - rf
-kfold: 5
+kfold: 2
 ncores: 8
 nseeds: 10
 find_feature_importance: true
