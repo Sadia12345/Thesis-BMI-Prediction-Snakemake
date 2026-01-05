@@ -1,4 +1,4 @@
-# Microbiome-Based BMI Prediction Pipeline
+# Snakemake Workflow for Microbiome-Based BMI Prediction
 
 ## Thesis Project Overview
 This repository contains the reproducible computational workflow for my Master's thesis. The goal of this project is to develop machine learning models that predict Body Mass Index (BMI) from human gut microbiome taxonomic profiles.

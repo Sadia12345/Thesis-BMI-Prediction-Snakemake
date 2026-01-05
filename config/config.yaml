@@ -1,11 +1,10 @@
-dataset_csv: data/metalog_test.csv
-dataset_name: "metalog_test"
-outcome_colname: group
+dataset_csv: data/metalog_bmi_mini.csv
+dataset_name: "metalog_bmi_mini"
+outcome_colname: bmi
 ml_methods:
- - glmnet
- - rf
+  - glmnet
 kfold: 2
-ncores: 8
-nseeds: 10
-find_feature_importance: true
+ncores: 4
+nseeds: 1
+find_feature_importance: false
 hyperparams:
