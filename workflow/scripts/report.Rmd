@@ -38,9 +38,9 @@ cat("### Model Performance metrics\n")
 cat("This figure summarizes the Area Under the Receiver Operating Characteristic (AUROC) curve for each machine learning method. Higher values indicate better predictive performance.\n\n")
 include_graphics(get_fig_path("performance.png"))
 
-cat("\n### ROC Curves\n")
-cat("The Receiver Operating Characteristic (ROC) curves illustrate the trade-off between sensitivity (true positive rate) and specificity (1 - false positive rate) across different threshold settings.\n\n")
-include_graphics(get_fig_path("roc_curves.png"))
+# cat("\n### ROC Curves\n")
+# cat("The Receiver Operating Characteristic (ROC) curves illustrate the trade-off between sensitivity (true positive rate) and specificity (1 - false positive rate) across different threshold settings.\n\n")
+# include_graphics(get_fig_path("roc_curves.png"))
 
 cat("\n### Hyperparameter Tuning\n")
 cat("These plots show the model performance across different hyperparameter values during the cross-validation phase, identifying the optimal configuration for training.\n\n")
@@ -48,8 +48,8 @@ hp_paths <- file.path(figures_dir, paste0("hp_performance_", params$ml_methods, 
 include_graphics(hp_paths)
 
 if (isTRUE(params$find_feature_importance)) {
-    cat("\n### Feature Importance\n")
-    cat("Top predictive features identified by the model. Importance is measured by the decrease in performance when the feature's values are randomly permuted.\n\n")
+  cat("\n### Feature Importance\n")
+  cat("Top predictive features identified by the model. Importance is measured by the decrease in performance when the feature's values are randomly permuted.\n\n")
 }
 include_graphics(get_fig_path("feature_importance.png"))
 include_graphics(get_fig_path("benchmarks.png"))

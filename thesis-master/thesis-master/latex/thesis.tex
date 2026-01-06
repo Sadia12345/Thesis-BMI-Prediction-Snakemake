@@ -1,0 +1,51 @@
+\documentclass[language=english, version=final, mainfont=none, sharelatex=false]{utuftthesis}
+% Note: 'mainfont=none' is often safer for local compilation if specific fonts aren't installed.
+% 'sharelatex=false' assumes local compilation.
+
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{float}
+
+% Thesis Metadata
+\pubyear{2026}
+\pubmonth{January}
+\publab{Department of Computing}
+\publaben{Department of Computing}
+\pubtype{tkk} % Master of Science in Technology (thesis)
+\pubtypeen{Master of Science Degree Thesis}
+\title{Optimizing Machine Learning Workflows for Microbiome-Based BMI Prediction: A Scaling and Feature Selection Study}
+\author{Sadia Zaman}
+
+\begin{document}
+
+\maketitle
+\input{abstract.tex}
+
+% TOC
+\tableofcontents
+
+% Main Chapters
+\chapter{Introduction}
+\input{introduction.tex}
+
+\chapter{Literature Review}
+\input{literature_review.tex}
+
+\chapter{Methodology}
+\input{methods.tex}
+
+\chapter{Results}
+\input{results.tex}
+
+\chapter{Discussion}
+\input{discussion.tex}
+
+\chapter{Conclusion}
+\input{conclusion.tex}
+
+% Bibliography
+\bibliographystyle{plain}
+\bibliography{Bibliografia}
+
+\end{document}

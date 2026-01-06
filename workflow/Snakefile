@@ -32,7 +32,7 @@ seeds = range(start_seed, start_seed + nseeds)
 
 hyperparams = config["hyperparams"] if "hyperparams" in config else None
 find_feature_importance = config["find_feature_importance"]
-results_types = ["performance", "benchmarks", "sensspec"]
+results_types = ["performance", "benchmarks"]
 if find_feature_importance:
     results_types.append("feature-importance")
 
@@ -53,7 +53,6 @@ rule render_report:
         feat_plot="figures/{dataset}/feature_importance.png",
         hp_plot=expand("figures/{{dataset}}/hp_performance_{method}.png", method=ml_methods),
         bench_plot=rules.plot_benchmarks.output.plot,
-        roc_plot=rules.plot_roc_curves.output.plot,
         rulegraph="figures/graphviz/rulegraph.png"
     output:
         html="report_{dataset}.html"

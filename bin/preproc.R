@@ -17,7 +17,8 @@ ncores <- if (length(args) > 3) as.numeric(args[4]) else 1
 
 # Register parallel backend
 registerDoFuture()
-plan(future::multicore, workers = ncores)
+plan(future::multisession, workers = ncores)
+options(future.globals.maxSize = 4000 * 1024^2) # Increase limit to 4GB
 
 message("Reading data from: ", input_csv)
 data_raw <- readr::read_csv(input_csv)

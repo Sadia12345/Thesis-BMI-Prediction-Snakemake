@@ -1,0 +1,13 @@
+\chapter{Literature Review}
+\label{ch:litreview}
+
+\section{Machine Learning in Microbiome Research}
+The application of machine learning to microbiome data has revolutionized our understanding of microbial ecology and its impact on human health. Early studies demonstrated the ability to classify samples by body site or host phenotype with high accuracy \cite{knights2011super}. However, moving from classification to continuous trait prediction (regression), such as BMI, introduces additional complexity.
+
+\section{Challenges: Sparsity and Compositionality}
+Microbiome data is inherently sparse (zero-inflated) and compositional (relative abundances sum to 1). Lahti et al. \cite{lahti2021statistical} emphasize that standard statistical assumptions often fail with such data. Features (taxa) are highly correlated, and the number of features often far exceeds the number of samples. This "curse of dimensionality" necessitates robust feature selection and regularization techniques.
+
+The \texttt{microbiome} R package \cite{microbiomepkg}, co-developed by Lahti, provides essential tools for managing this complexity, including prevalence filtering and compositionality-aware transformations.
+
+\section{Reproducibility and Benchmarking}
+A major crisis in the field is the lack of reproducibility. Different preprocessing steps (e.g., rarefaction vs. log-ratio transformation) can lead to contradictory results. Top{\c{c}}uo{\u{g}}lu et al. introduced \texttt{mikropml} \cite{topcuoglu2020mikropml} to standardize the ML pipeline, automating steps like data splitting, preprocessing, and hyperparameter tuning. This thesis builds upon this framework to ensure rigorous reproducibility.

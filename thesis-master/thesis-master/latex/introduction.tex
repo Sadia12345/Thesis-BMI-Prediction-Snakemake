@@ -1,0 +1,20 @@
+\chapter{Introduction}
+\label{ch:intro}
+
+The human microbiome, the vast collection of microorganisms residing in and on the human body, plays a crucial role in maintaining health and influencing disease states. In particular, the gut microbiome has been identified as a key factor in metabolic health, with distinct microbial signatures associated with obesity and Body Mass Index (BMI). As sequencing technologies advance, the volume of microbiome data has exploded, presenting both opportunities and challenges for computational biology.
+
+\section{Background and Motivation}
+Machine learning (ML) has emerged as a vital tool for decoding these complex host-microbe interactions. Unlike traditional statistical methods, ML algorithms can capture non-linear relationships and interactions within high-dimensional datasets. However, microbiome data is characterized by unique properties: it is compositional, sparse, and extremely high-dimensional (thousands of species vs. limited sample sizes). This "large $p$, small $n$" problem poses significant risks of overfitting and computational bottlenecks.
+
+Recent initiatives, such as the COST Action "ML4Microbiome" \cite{lahti2021statistical}, highlight the need for standardized, reproducible, and interpretable ML workflows. A critical barrier remains the computational cost of training models on large-scale metagenomic datasets, which often necessitates High-Performance Computing (HPC) clusters, limiting accessibility for students and researchers with standard local hardware.
+
+\section{Research Objectives}
+This thesis aims to bridge the gap between advanced microbiome ML and computational feasibility. The primary objectives are:
+\begin{enumerate}
+    \item \textbf{Pipeline Implementation:} To develop a reproducible, automated ML workflow for BMI prediction using the \texttt{mikropml} package and Snakemake.
+    \item \textbf{Scaling Analysis:} To empirically determine the relationship between dataset size and prediction accuracy (saturation analysis) to identify the optimal data volume for resource-constrained environments.
+    \item \textbf{Optimization:} To implement and evaluate feature selection strategies, specifically prevalence filtering, to reduce memory reliability without sacrificing model performance.
+\end{enumerate}
+
+\section{Structure of the Thesis}
+Chapter \ref{ch:litreview} reviews the state-of-the-art in microbiome machine learning. Chapter \ref{ch:methods} details the dataset, the \texttt{mikropml} pipeline, and the experimental design of the scaling study. Chapter \ref{ch:results} presents the performance metrics and the saturation curve. Finally, Chapter \ref{ch:conclusion} summarizes the findings and discusses implications for future research.
