@@ -13,7 +13,7 @@ To address the high dimensionality and memory constraints of local execution, we
 \begin{equation}
     Keep_i \iff \frac{\sum_{j=1}^{N} \mathbb{I}(Abundance_{ij} > 0)}{N} \ge 0.01
 \end{equation}
-This step reduced the feature space from ~6,300 to ~1,500, significantly lowering the RAM footprint (see Figure \ref{fig:feature_reduction}).
+This step reduced the feature space from ~6,300 to ~1,500, significantly lowering the RAM footprint (see Figure \ref{fig:feature_reduction}). Additionally, demographic covariates such as Age and Sex were excluded from the feature set to ensure the model relies solely on microbial abundance data for prediction.
 
 \section{The Snakemake Workflow}
 We developed a reproducible pipeline using Snakemake. The workflow consists of the following rules:

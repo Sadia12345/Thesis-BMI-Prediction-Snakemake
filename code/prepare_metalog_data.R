@@ -10,11 +10,8 @@ output_path <- "data/metalog_bmi_filtered.csv"
 
 message("Loading metadata...")
 metadata <- fread(metadata_path) %>%
-  select(sample_alias, bmi, age_years, sex) %>%
-  filter(!is.na(bmi)) %>%
-  filter(!is.na(age_years)) %>%
-  filter(!is.na(sex)) %>%
-  mutate(sex = as.factor(sex))
+  select(sample_alias, bmi) %>%
+  filter(!is.na(bmi))
 # Note: Weight and Height excluded to prevent leakage.
 
 message(paste("Metadata loaded. Valid samples with BMI:", nrow(metadata)))
