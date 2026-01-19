@@ -1,5 +1,5 @@
-dataset_csv: data/metalog_bmi_10k.csv
-dataset_name: "metalog_bmi_10k"
+dataset_csv: data/metalog_bmi_13k.csv
+dataset_name: "metalog_bmi_13k"
 outcome_colname: bmi
 ml_methods:
   - glmnet

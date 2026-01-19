@@ -15,7 +15,7 @@ data <- fread(input_path)
 total_n <- nrow(data)
 message(paste("Total samples:", total_n))
 
-sizes <- c(1000, 2000, 5000, 10000)
+sizes <- c(1000, 2000, 5000, 10000, 13000, 15000)
 
 for (n in sizes) {
     if (n <= total_n) {

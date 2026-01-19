@@ -4,7 +4,7 @@ library(tidyverse)
 library(ggplot2)
 
 # Define datasets
-subsets <- c("1k", "2k", "5k", "10k")
+subsets <- c("1k", "2k", "5k", "10k", "13k", "15k")
 results_list <- list()
 
 # Loop through subsets to read performance data
@@ -57,7 +57,7 @@ p <- ggplot(summary_stats, aes(x = subset_size, y = mean_rmse)) +
         caption = "Error bars represent Standard Deviation across CV folds/seeds"
     ) +
     theme_minimal() +
-    scale_x_continuous(breaks = c(1000, 2000, 5000, 10000))
+    scale_x_continuous(breaks = c(1000, 2000, 5000, 10000, 13000, 15000))
 
 ggsave("figures/saturation_curve.png", p, width = 8, height = 6)
 message("Saturation plot saved to figures/saturation_curve.png")
