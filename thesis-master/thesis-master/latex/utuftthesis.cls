@@ -167,6 +167,7 @@
     %% hides the underlining of links with red (by hyperref)
     %% @see http://mirrors.ctan.org/macros/latex/contrib/hyperref/doc/manual.pdf
     %% note: pdfx implicitly imports hyperref
+    \RequirePackage{hyperref}
     \ifutuftthesis@hidelinks
       \hypersetup{hidelinks}
     \fi

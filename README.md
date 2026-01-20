@@ -11,6 +11,12 @@ By leveraging the mikropml R package within a Scalable Snakemake workflow, this 
   - Reproducibility verified on local hardware.
 - Next Phase: Final thesis submission.
 
+## Results Summary
+The scaling study (1,000 to 15,000 samples, 100 seeds each) confirmed the **Saturation Hypothesis**:
+- **13,000 samples:** Achieved optimal performance (RMSE **5.70**).
+- **15,000 samples:** Performance plateaued (RMSE **5.78**), indicating diminishing returns.
+- **Conclusion:** 13k samples capture the maximal predictive signal for BMI in this dataset.
+
 ## Methodology
 The analysis follows a rigorous machine learning framework:
 1. Data Preprocessing: Cleaning and normalizing taxonomic count data.
