@@ -4,7 +4,7 @@ rule preprocess_data:
     output:
         rds=f"data/processed/{dataset}_preproc.Rds",
     log:
-        "log/preprocess_data.txt",
+        f"log/{dataset}/preprocess_data.txt",
     benchmark:
         "benchmarks/preprocess_data.txt"
     params:

@@ -9,13 +9,30 @@ results_list <- list()
 
 # Loop through subsets to read performance data
 for (s in subsets) {
-    file_path <- paste0("results/metalog_bmi_", s, "/runs/glmnet_100_performance.csv")
+    file_path <- paste0("results/metalog_bmi_", s, "/performance_results.csv")
+
     if (file.exists(file_path)) {
         df <- read_csv(file_path, show_col_types = FALSE)
         df$subset_size <- as.numeric(gsub("k", "000", s))
         results_list[[s]] <- df
     } else {
-        warning(paste("Missing results for:", s))
+        # Fallback: Read individual run files if aggregated file is missing (e.g. partial run)
+        run_dir <- paste0("results/metalog_bmi_", s, "/runs")
+        if (dir.exists(run_dir)) {
+            run_files <- list.files(path = run_dir, pattern = "_performance\\.csv$", full.names = TRUE)
+        } else {
+            run_files <- character(0)
+        }
+
+        if (length(run_files) > 0) {
+            message(paste("Aggregating", length(run_files), "run files for subset:", s))
+            df_list <- lapply(run_files, read_csv, show_col_types = FALSE)
+            df <- bind_rows(df_list)
+            df$subset_size <- as.numeric(gsub("k", "000", s))
+            results_list[[s]] <- df
+        } else {
+            warning(paste("Missing results for:", s))
+        }
     }
 }
 
