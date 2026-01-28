@@ -3,6 +3,8 @@ dataset_name: "metalog_bmi_13k"
 outcome_colname: bmi
 ml_methods:
   - glmnet
+  - rf
+  - xgbTree
 kfold: 2
 ncores: 4
 nseeds: 100

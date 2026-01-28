@@ -1,8 +1,0 @@
-\chapter{Discussion}
-\label{ch:discussion}
-
-\section{Optimizing for Local Resources}
-Our study demonstrates that effective microbiome machine learning does not always require High-Performance Computing (HPC). By implementing smart feature selection (prevalence filtering), we reduced the dataset's memory footprint by ~80\% (from 6.5GB to <2GB active RAM during processing). This allowed the analysis of 10,000 samples on a standard laptop.
-
-\section{The Saturation Effect}
-The saturation curve (Figure \ref{fig:saturation}) aligns with theoretical expectations for biological datasets. The initial rapid improvement (1k to 5k) represents the model learning the core "obesity signature" taxa. The flattening tail (5k to 10k) suggests that further improvements would require either significantly more data (e.g., 100k samples) or more complex non-linear models (e.g., Deep Learning), though the latter would re-introduce the computational bottlenecks we aimed to avoid.
