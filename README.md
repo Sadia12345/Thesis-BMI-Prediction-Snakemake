@@ -1,68 +1,101 @@
-# BMI Prediction from Microbiome: A Scaling and Saturation Study
+# Microbiome-Based Body Mass Index Prediction: Snakemake Workflow
 
-## Project Overview
-This repository contains the complete computational framework for my Master's thesis. The project investigates the scalability and optimization of machine learning (ML) models for predicting Body Mass Index (BMI) using taxonomic profiles from human gut metagenomes.
+This repository contains the code-only Snakemake workflow used in the master's thesis **"Microbiome-Based Body Mass Index Prediction: A Scalable Machine Learning Benchmark for Large-Scale Metagenomic Data"** (University of Turku, ICT / Data Analytics).
 
-The workflow is built for **reproducibility** and **transparency**, following the best practices suggested by the ML4Microbiome consortium.
+**Author:** Sadia Zaman  
+**Supervisors:** Professor Leo Lahti; Geraldson Muluh
 
-## Key Research Outcomes
-This study directly addresses the research questions regarding model saturation and computational optimization:
+The repository documents a reproducible, repeated-evaluation-oriented benchmarking workflow for microbiome-only BMI prediction from large-scale human gut metagenomic taxonomic profiles. It focuses on prevalence filtering, fixed subset generation, repeated-seed model runs, and RMSE-based learning-curve summaries under the implementation constraints described in the thesis.
 
-### 1. The Saturation Point
-Through a wide-scale scaling study (1k to 15k samples, 100 seeds per subset), we identified a clear **saturation point at 13,000 samples**. 
-- **RMSE at 13k:** 5.70
-- **RMSE at 15k:** 5.78 (plateau)
+## Scope of the Repository
 
-### 2. Computational Optimization
-- **Feature Prefiltering:** A 1% prevalence filter reduced the feature space from ~6,300 to ~1,500 species, accelerating training without loss of accuracy.
-- **Workflow Automation:** A Snakemake pipeline that parallelizes 100 random seeds for robust statistical evaluation.
+The workflow supports:
+- preparation of Metalog-derived microbiome-only BMI datasets
+- global prevalence filtering before subset generation
+- repeated model evaluation across predefined sample-size subsets
+- aggregation of repeated-run performance summaries
+- production of saturation and feature-ranking outputs under the retained Snakemake workflow context
 
-## Data Acquisition & Preparation
+This repository is a **code-only** release. Large Metalog-derived input tables, private local run artifacts, and the thesis manuscript itself are not redistributed here.
 
-The pipeline expects processed CSV files in the `data/` directory. If starting from raw Metalog datasets, follow these steps:
+## Study Context
 
-### 1. Raw Data Placement
-Place your taxonomic and metadata files in `data/metalog/`:
-- `data/metalog/human_core_wide_YYYY-MM-DD.tsv` (Metadata with BMI)
-- `data/metalog/human_metaphlan4_species_YYYY-MM-DD.tsv` (Relative Abundance)
+In the thesis benchmark, the Snakemake workflow was used to complement the Nextflow analysis with a different computational emphasis. Rather than acting as a duplicate of the Nextflow pipeline, the Snakemake workflow emphasized:
+- repeated evaluation across many random seeds
+- fixed subset-size benchmarking
+- rule-based workflow transparency
+- practical inspection of stability under repeated sampling
 
-### 2. Data Cleaning & Filtering
-Run the preparation script to merge datasets, remove leakage variables (Weight/Height), and apply prevalence filtering:
-```bash
-Rscript code/prepare_metalog_data.R
+The benchmark should be read as a workflow-based predictive study, not as a claim of causal inference or a clinically deployable BMI model.
+
+## Main Benchmark Characteristics
+
+The interpreted Snakemake benchmark in the thesis used:
+- a globally prevalence-filtered microbiome-only matrix
+- fixed subset sizes of 1,000, 2,000, 5,000, 10,000, 13,000, and 15,000 samples
+- 2-fold cross-validation
+- repeated runs across seeds 100--199
+- model methods configured as `glmnet`, `rf`, and `xgbTree`, although the retained archived summary outputs used in the thesis did not preserve a full stable XGBoost benchmark table
+
+In the retained thesis outputs, the Snakemake workflow contributed an RMSE-based learning-curve view and a separate coefficient-based ranking figure from the 10,000-sample context. The saved Snakemake outputs suggested diminishing gains around the 13,000-sample region, which was treated in the thesis as a complementary workflow-specific convergence pattern rather than as a numerically identical replication of the Nextflow results.
+
+These findings are specific to the implemented workflow, the Metalog-derived analysis matrix, and the archived outputs retained for thesis interpretation.
+
+## XGBoost Status
+
+The Snakemake configuration included `xgbTree` during development. However, in the archived outputs used for the thesis, stable retained XGBoost performance tables were not preserved as part of the interpreted benchmark summaries. For that reason, XGBoost is discussed in the thesis as an explored but non-interpreted model family rather than as a main reported result.
+
+## Repository Layout
+
+```text
+.
+|-- workflow/
+|   |-- rules/
+|   |-- scripts/
+|   `-- envs/
+|-- config/
+|-- code/
+|-- bin/
+|-- data/
+|-- figures/
+|-- results/
+|-- benchmarks/
+|-- README.md
+`-- quick-start.md
 ```
-This generates `data/metalog_bmi_filtered.csv`, which serves as the base for the Snakemake subsets.
 
-## Repository Structure
-- **`workflow/`**: The core Snakemake logic (rules, scripts, envs).
-- **`config/`**: YAML settings for model type (Lasso, RF, XGB) and data paths.
-- **`code/`**: Standalone R scripts for dataset preparation and subsetting.
-- **`bin/`**: Helper scripts for performance aggregation.
-- **`data/`**: Storage for raw and processed datasets.
-- **`figures/`**: Output directory for saturation curves and feature importance plots.
+## Input Data
 
-## How to Run the Pipeline
+The workflow expects processed Metalog-derived CSV inputs in the `data/` directory. When building the working data from source tables, the preparation scripts merge microbiome and metadata inputs, remove direct leakage variables, and apply the prevalence-filtering logic described in the thesis.
 
-### 1. Setup Environment
-```bash
-conda env create -f workflow/envs/mikropml.yml
-conda activate mikropml
-```
+Access to the underlying data remains subject to the relevant dataset-governance constraints.
 
-### 2. Configure the Run
-Update `config/config.yaml` to point to your data:
-```yaml
-dataset_csv: data/metalog_bmi_13k.csv
-outcome_colname: bmi
-```
+## Typical Execution Flow
 
-### 3. Execute
+1. Prepare the required CSV inputs.
+2. Configure the target dataset and output settings in `config/`.
+3. Run the Snakemake workflow.
+4. Aggregate and inspect the repeated-run performance summaries and generated figures.
+
+Example command:
+
 ```bash
 snakemake --cores all
 ```
 
-## Scientific Rigor: Data Leakage Prevention
-To ensure valid biological predictions, the workflow strictly enforces:
-1. **Target Leakage Removal:** Weight and Height are explicitly removed from features.
-2. **Confounding Control:** Age and Sex are excluded to isolate the microbial signal.
-3. **Robustness:** 100 random seeds are used to evaluate model stability.
+## Reproducibility Note
+
+The thesis cites this public repository as a reproducibility resource rather than as a full data release. For the thesis snapshot, the referenced repository state is commit:
+
+`15d4b92627a970de2bb7527d7b49e4bb7dc44dde`
+
+This identifies the exact public code state associated with the thesis documentation.
+
+## Interpretation Boundaries
+
+The outputs generated by this repository should be interpreted cautiously:
+- repeated-seed internal performance summaries do not by themselves establish external transportability to independent cohorts
+- coefficient-based or model-based feature-ranking outputs are descriptive and do not establish causality
+- workflow-specific convergence patterns should be interpreted in light of the implemented preprocessing, subset design, and retained summary outputs
+
+For the full methodological interpretation, limitations, and discussion of workflow trade-offs, use the thesis text together with this repository.
