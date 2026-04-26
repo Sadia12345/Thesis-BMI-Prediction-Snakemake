@@ -70,26 +70,41 @@ The workflow expects processed Metalog-derived CSV inputs in the `data/` directo
 
 Access to the underlying data remains subject to the relevant dataset-governance constraints.
 
-## Typical Execution Flow
+## Technical Execution Guide
 
-1. Prepare the required CSV inputs.
-2. Configure the target dataset and output settings in `config/`.
-3. Run the Snakemake workflow.
-4. Aggregate and inspect the repeated-run performance summaries and generated figures.
+### 1. Environment Setup
 
-Example command:
+Create and activate the workflow environment:
+
+```bash
+conda env create -f workflow/envs/mikropml.yml
+conda activate mikropml
+```
+
+### 2. Configure the Dataset
+
+Update the dataset path and outcome settings in `config/config.yaml` as needed.
+
+Example:
+
+```yaml
+dataset_csv: data/metalog_bmi_13k.csv
+outcome_colname: bmi
+```
+
+### 3. Run the Workflow
 
 ```bash
 snakemake --cores all
 ```
 
+## Output Artifacts
+
+The workflow produces repeated-run summaries, aggregated performance outputs, and figure-generation inputs under the configured results and figures directories. In the thesis context, the retained outputs of greatest interest were the RMSE-based saturation summary and the 10,000-sample coefficient-based feature-ranking figure.
+
 ## Reproducibility Note
 
-The thesis cites this public repository as a reproducibility resource rather than as a full data release. For the thesis snapshot, the referenced repository state is commit:
-
-`15d4b92627a970de2bb7527d7b49e4bb7dc44dde`
-
-This identifies the exact public code state associated with the thesis documentation.
+The thesis cites this public repository as a reproducibility resource rather than as a full data release. This identifies the exact public code state associated with the thesis documentation.
 
 ## Interpretation Boundaries
 
