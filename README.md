@@ -3,7 +3,9 @@
 This repository contains the code-only Snakemake workflow used in the master's thesis **"Microbiome-Based Body Mass Index Prediction: A Scalable Machine Learning Benchmark for Large-Scale Metagenomic Data"** (University of Turku, ICT / Data Analytics).
 
 **Author:** Sadia Zaman  
-**Supervisors:** Professor Leo Lahti; Geraldson Muluh
+**Supervisors:** Professor Leo Lahti; MSc Geraldson Muluh
+**Licence:** Artistic 2.0
+**DOI:** https://doi.org/10.5281/zenodo.20569828
 
 The repository documents a reproducible, repeated-evaluation-oriented benchmarking workflow for microbiome-only BMI prediction from large-scale human gut metagenomic taxonomic profiles. It focuses on prevalence filtering, fixed subset generation, repeated-seed model runs, and RMSE-based learning-curve summaries under the implementation constraints described in the thesis.
 
